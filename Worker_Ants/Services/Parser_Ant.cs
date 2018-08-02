@@ -73,6 +73,18 @@ namespace Worker_Ants
                 }
                 //PostData(filename, value);
                 Program.JSON_Data.Push(JsonConvert.SerializeObject(value));
+                if(Program.Post_Thread.ThreadState == System.Threading.ThreadState.Unstarted && Program.JSON_Data.Count > 10)
+                {
+                    //System.Console.WriteLine("POST" + " : " + Program.Post_Thread.ThreadState);
+                    Program.Post_Thread.Start("POST");
+                    //System.Console.WriteLine("POST" + " : " + Program.Post_Thread.ThreadState);
+                }
+                if(Program.Post_Thread.ThreadState == System.Threading.ThreadState.Suspended)
+                {
+                    //System.Console.WriteLine("POST" + " : " + Program.Post_Thread.ThreadState);
+                    Program.Post_Thread.Resume();
+                    //System.Console.WriteLine("POST" + " : " + Program.Post_Thread.ThreadState);
+                }
             }
             s.Stop();
             System.Console.WriteLine(threadname.ToString() + "," + (s.Elapsed).ToString());
